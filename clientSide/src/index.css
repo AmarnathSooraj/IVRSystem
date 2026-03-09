@@ -1,3 +1,20 @@
+<<<<<<< HEAD
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
+
+@theme inline {
+  --color-main: #fefefe;
+  --color-sidebar: #fefefe;
+  --color-sideBlack: #36454f;
+  --color-mainBlack: #1c1c1c;
+  --font-poppins:
+    "Poppins", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+body {
+  font-family: var(--font-poppins);
+=======
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -65,4 +82,5 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+>>>>>>> production
 }
