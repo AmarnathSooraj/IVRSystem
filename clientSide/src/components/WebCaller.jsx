@@ -71,19 +71,19 @@ const WebCaller = () => {
   const isIdle = status === "idle";
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-lg w-full max-w-xs p-6 flex flex-col items-center gap-5">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl border border-mainBlack/10 w-full max-w-xs p-6 flex flex-col items-center gap-5 shadow-sm">
         {/* Header */}
-        <h1 className="text-xl font-semibold text-gray-800">IVR Web Caller</h1>
+        <h1 className="text-xl font-semibold text-mainBlack">IVR Web Caller</h1>
 
         {/* Status badge */}
         <span
-          className={`text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full ${
+          className={`text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full border ${
             isConnected
-              ? "bg-green-100 text-green-700"
+              ? "bg-green-100 text-green-700 border-green-200"
               : isConnecting
-                ? "bg-yellow-100 text-yellow-700"
-                : "bg-gray-100 text-gray-500"
+                ? "bg-yellow-100 text-yellow-700 border-yellow-200"
+                : "bg-gray-100 text-gray-500 border-gray-200"
           }`}
         >
           {status}
@@ -91,14 +91,14 @@ const WebCaller = () => {
 
         {/* Error */}
         {error && (
-          <p className="text-xs text-red-500 text-center bg-red-50 rounded-lg px-3 py-2 w-full">
+          <p className="text-xs text-mainBlack text-center bg-mainBlack/5 border border-mainBlack/10 rounded-lg px-3 py-2 w-full">
             {error}
           </p>
         )}
 
         {/* DTMF display */}
-        <div className="w-full bg-gray-100 rounded-xl px-4 py-3 text-center text-2xl font-mono tracking-widest text-gray-700 min-h-[3rem]">
-          {dtmfInput || <span className="text-gray-300 text-base">— dial pad —</span>}
+        <div className="w-full bg-mainBlack/5 rounded-xl px-4 py-3 text-center text-2xl font-mono tracking-widest text-mainBlack min-h-[3rem] border border-mainBlack/5">
+          {dtmfInput || <span className="text-mainBlack/20 text-base">— dial pad —</span>}
         </div>
 
         {/* DTMF Keypad */}
@@ -107,7 +107,7 @@ const WebCaller = () => {
             <button
               key={key}
               onClick={() => sendDtmf(key)}
-              className="h-14 rounded-xl bg-gray-100 hover:bg-indigo-100 active:bg-indigo-200 text-gray-800 font-semibold text-lg transition-colors duration-150 select-none"
+              className="h-14 rounded-xl bg-white border border-mainBlack/10 hover:bg-mainBlack hover:text-white transition-all duration-150 select-none font-semibold text-lg"
             >
               {key}
             </button>
@@ -119,7 +119,7 @@ const WebCaller = () => {
           <button
             onClick={makeCall}
             disabled={!device}
-            className="w-full py-3 rounded-xl bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-semibold text-base transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full py-3 rounded-xl bg-green-500 text-white font-semibold text-base hover:bg-green-600 active:scale-[0.98] transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed shadow-md"
           >
             Call IVR
           </button>
@@ -127,7 +127,7 @@ const WebCaller = () => {
           <button
             onClick={hangUp}
             disabled={isConnecting}
-            className="w-full py-3 rounded-xl bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-semibold text-base transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full py-3 rounded-xl bg-red-500 text-white font-semibold text-base hover:bg-red-600 active:scale-[0.98] transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed shadow-md"
           >
             {isConnecting ? "Connecting…" : "Hang Up"}
           </button>

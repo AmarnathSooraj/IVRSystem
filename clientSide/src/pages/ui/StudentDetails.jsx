@@ -110,12 +110,12 @@ export default function StudentDetails() {
   return (
     <div className="space-y-5">
       {/* Page Header */}
-      <div className="pb-4 border-b border-gray-200 flex items-center justify-between">
+      <div className="pb-4 border-b border-mainBlack/10 flex items-center justify-between">
         <div>
           <h1 className="text-[2rem] font-semibold text-mainBlack">
             Student Details
           </h1>
-          <p className="text-sm text-gray-500 mt-0.5">
+          <p className="text-sm text-mainBlack/60 mt-0.5">
             View and search all student records from database
           </p>
         </div>
@@ -123,13 +123,13 @@ export default function StudentDetails() {
           <button
             onClick={handleExportCSV}
             disabled={loading || students.length === 0}
-            className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-3 py-2 bg-white border border-mainBlack/10 rounded-lg text-sm font-medium text-mainBlack hover:bg-mainBlack/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Download size={16} />
             Export CSV
           </button>
           {!loading && (
-            <span className="text-xs font-medium bg-indigo-50 text-indigo-600 border border-indigo-200 rounded-full px-3 py-1">
+            <span className="text-xs font-medium bg-mainBlack text-white border border-mainBlack rounded-full px-3 py-1">
               {filteredAndSorted.length} students
             </span>
           )}
@@ -141,20 +141,20 @@ export default function StudentDetails() {
         <div className="relative w-72">
           <Search
             size={15}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-mainBlack/40"
           />
           <input
             type="text"
             placeholder="Search name, admission no, course..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
+            className="w-full pl-9 pr-4 py-2 text-sm border border-mainBlack/20 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-mainBlack focus:border-mainBlack transition-all"
           />
         </div>
 
         <button
           onClick={toggleSort}
-          className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-white border border-mainBlack/10 rounded-lg text-sm font-medium text-mainBlack hover:bg-mainBlack/5 transition-colors"
         >
           {sortOrder === "asc" ? (
             <ArrowUp size={16} />
@@ -166,18 +166,18 @@ export default function StudentDetails() {
       </div>
 
       {/* Table / Content */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden min-h-[200px] flex flex-col">
+      <div className="bg-white rounded-lg border border-mainBlack/10 overflow-hidden min-h-[200px] flex flex-col">
         {loading ? (
-          <div className="flex-1 flex flex-col items-center justify-center p-10 text-gray-500">
-            <Loader2 className="w-8 h-8 animate-spin mb-2 text-indigo-500" />
+          <div className="flex-1 flex flex-col items-center justify-center p-10 text-mainBlack/40">
+            <Loader2 className="w-8 h-8 animate-spin mb-2 text-mainBlack" />
             <p className="text-sm">Fetching student records...</p>
           </div>
         ) : error ? (
-          <div className="flex-1 flex flex-col items-center justify-center p-10 text-rose-500">
+          <div className="flex-1 flex flex-col items-center justify-center p-10 text-mainBlack">
             <p className="text-sm font-medium">{error}</p>
             <button
               onClick={fetchStudents}
-              className="mt-3 text-xs bg-rose-50 border border-rose-200 px-3 py-1 rounded-md hover:bg-rose-100 transition-colors"
+              className="mt-3 text-xs bg-mainBlack text-white border border-mainBlack px-3 py-1 rounded-md hover:bg-mainBlack/90 transition-colors"
             >
               Retry
             </button>
@@ -185,7 +185,7 @@ export default function StudentDetails() {
         ) : (
           <table className="w-full text-sm text-left">
             <thead>
-              <tr className="border-b border-gray-200 bg-gray-50">
+              <tr className="border-b border-mainBlack/10 bg-mainBlack/5">
                 {[
                   "Admission No",
                   "Name",
@@ -197,35 +197,35 @@ export default function StudentDetails() {
                 ].map((h) => (
                   <th
                     key={h}
-                    className="px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider"
+                    className="px-5 py-3 text-xs font-semibold text-mainBlack/60 uppercase tracking-wider"
                   >
                     {h}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-mainBlack/5">
               {filteredAndSorted.map((s) => (
-                <tr key={s.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-5 py-3.5 font-mono text-xs text-gray-500">
+                <tr key={s.id} className="hover:bg-mainBlack/5 transition-colors">
+                  <td className="px-5 py-3.5 font-mono text-xs text-mainBlack/60">
                     {s.admission_no}
                   </td>
                   <td className="px-5 py-3.5 font-medium text-mainBlack">
                     {s.name}
                   </td>
-                  <td className="px-5 py-3.5 text-gray-600">
+                  <td className="px-5 py-3.5 text-mainBlack/80">
                     {s.date_of_birth || "N/A"}
                   </td>
-                  <td className="px-5 py-3.5 text-gray-600">
+                  <td className="px-5 py-3.5 text-mainBlack/80">
                     {s.email || "N/A"}
                   </td>
-                  <td className="px-5 py-3.5 text-gray-600">
+                  <td className="px-5 py-3.5 text-mainBlack/80">
                     {s.mobile_no || "N/A"}
                   </td>
-                  <td className="px-5 py-3.5 text-gray-600">
+                  <td className="px-5 py-3.5 text-mainBlack/80">
                     {s.semester || "N/A"}
                   </td>
-                  <td className="px-5 py-3.5 text-gray-600 font-medium">
+                  <td className="px-5 py-3.5 text-mainBlack/80 font-medium">
                     {s.cgpa || "N/A"}
                   </td>
                 </tr>
@@ -234,7 +234,7 @@ export default function StudentDetails() {
                 <tr>
                   <td
                     colSpan={7}
-                    className="text-center py-20 text-sm text-gray-400"
+                    className="text-center py-20 text-sm text-mainBlack/40"
                   >
                     No student records found in the database.
                   </td>

@@ -1,8 +1,9 @@
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, GraduationCap, Users } from "lucide-react";
+import { LayoutDashboard, GraduationCap, Users, Banknote } from "lucide-react";
 
 const navItems = [
   { label: "Dashboard", to: "/", icon: LayoutDashboard, end: true },
+  { label: "Fees Details", to: "/fees", icon: Banknote },
   { label: "Student Details", to: "/students", icon: GraduationCap },
   { label: "Staff Details", to: "/staff", icon: Users },
 ];
