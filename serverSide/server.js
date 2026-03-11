@@ -8,6 +8,7 @@ dotenv.config();
 
 const studentRoutes = require("./routes/studentRoutes");
 const courseRoutes = require("./routes/courseRoutes");
+const ivrRoutes = require("./routes/ivrRoutes");
 const db = require("./config/firebase");
 const {
   jwt: { AccessToken },
@@ -104,118 +105,14 @@ app.get("/api/twilio/stats", async (req, res) => {
   }
 });
 
-
-app.post("/api/voice", (req, res) => {
-  res.type("text/xml");
-  res.send(`
-    <Response>
-      <Say>Welcome to College of Engineering vadakara. How can I help you today?</Say>
-      <Gather numDigits="1" action="/api/menu">
-        <Say>Press 1 for marks, or press 2 for fees.</Say>
-      </Gather>
-      <Say>We didn't receive any input. Goodbye.</Say>
-    </Response>
-    `);
-});
-
-app.post("/api/menu", (req, res) => {
-  const digit = req.body.Digits;
-  res.type("text/xml");
-
-  if (digit === "1") {
-    res.send(`
-      <Response>
-        <Say>Please enter your admission number followed by the hash key.</Say>
-        <Gather action="/api/marks" method="POST" finishOnKey="#">
-          <Say>Waiting for your admission number.</Say>
-        </Gather>
-      </Response>
-    `);
-  } else if (digit === "2") {
-    res.send(`
-      <Response>
-        <Say>Please enter your admission number followed by the hash key.</Say>
-        <Gather action="/api/fees" method="POST" finishOnKey="#">
-          <Say>Waiting for your admission number.</Say>
-        </Gather>
-      </Response>
-    `);
-  } else {
-    res.send(`
-      <Response>
-        <Say>Invalid option. Returning to the main menu.</Say>
-        <Redirect>/api/voice</Redirect>
-      </Response>
-    `);
-  }
-});
-
-app.post("/api/marks", async (req, res) => {
-  const admissionNo = req.body.Digits;
-  res.type("text/xml");
-  try {
-    const snapshot = await db.ref("students").once("value");
-    const students = snapshot.val();
-    const student = Object.values(students || {}).find(s => s.admission_no === admissionNo);
-
-    if (student) {
-      res.send(`
-        <Response>
-          <Say>The marks for student ${student.name} are ${student.marks}.</Say>
-          <Say>Thank you for calling. Goodbye.</Say>
-        </Response>
-      `);
-    } else {
-      res.send(`
-        <Response>
-          <Say>Student with admission number ${admissionNo} not found.</Say>
-          <Redirect>/api/voice</Redirect>
-        </Response>
-      `);
-    }
-  } catch (error) {
-    res.send(`<Response><Say>An error occurred. Please try again later.</Say></Response>`);
-  }
-});
-
-app.post("/api/fees", async (req, res) => {
-  const admissionNo = req.body.Digits;
-  res.type("text/xml");
-  try {
-    const snapshot = await db.ref("students").once("value");
-    const students = snapshot.val();
-    const student = Object.values(students || {}).find(s => s.admission_no === admissionNo);
-
-    if (student) {
-      res.send(`
-        <Response>
-          <Say>The fee status for student ${student.name} is ${student.fees}.</Say>
-          <Say>Thank you for calling. Goodbye.</Say>
-        </Response>
-      `);
-    } else {
-      res.send(`
-        <Response>
-          <Say>Student with admission number ${admissionNo} not found.</Say>
-          <Redirect>/api/voice</Redirect>
-        </Response>
-      `);
-    }
-  } catch (error) {
-    res.send(`<Response><Say>An error occurred. Please try again later.</Say></Response>`);
-  }
-});
-
-
-
-app.use("/api/students", studentRoutes);
+app.use("/api", ivrRoutes); app.use("/api/students", studentRoutes);
 
 // --- Auth & Admin Flow Routes ---
 
 // 1. Request Admin Access
 app.post("/api/auth/request-access", async (req, res) => {
   const { name, email, phone, origin } = req.body;
-  
+
   if (!name || !email || !phone || !origin) {
     return res.status(400).json({ error: "Missing required fields" });
   }
@@ -236,7 +133,7 @@ app.post("/api/auth/request-access", async (req, res) => {
     // Send email to the head admin
     // Using the explicit frontend origin to bypass Vite proxy localhost limits
     const approvalLink = `${origin}/api/auth/approve/${requestId}`;
-    
+
     const mailOptions = {
       from: "collegeivr5@gmail.com",
       to: "collegeivr5@gmail.com", // Sending to the admin
@@ -256,7 +153,7 @@ app.post("/api/auth/request-access", async (req, res) => {
     };
 
     await transporter.sendMail(mailOptions);
-    
+
     res.status(200).json({ message: "Request sent successfully to admin." });
   } catch (error) {
     console.error("Error requesting access:", error);
@@ -344,8 +241,8 @@ app.post("/api/auth/login", async (req, res) => {
     }
 
     // Success
-    res.status(200).json({ 
-      message: "Login successful", 
+    res.status(200).json({
+      message: "Login successful",
       user: { name: adminData.name, email: adminData.email }
     });
   } catch (error) {
