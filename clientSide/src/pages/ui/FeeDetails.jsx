@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Edit2, X, Save } from "lucide-react";
 
+const API_URL = import.meta.env.VITE_APP_API_URL || "http://localhost:5000";
+
 export default function FeeDetails() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,7 +16,7 @@ export default function FeeDetails() {
 
   const fetchCourses = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/courses");
+      const response = await fetch(`${API_URL}/api/courses`);
       if (response.ok) {
         const data = await response.json();
         setCourses(Array.isArray(data) ? data : Object.values(data));
@@ -49,7 +51,7 @@ export default function FeeDetails() {
     if (!selectedCourse) return;
     
     try {
-      const response = await fetch(`http://localhost:5000/api/courses/${selectedCourse.KEY}`, {
+      const response = await fetch(`${API_URL}/api/courses/${selectedCourse.KEY}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

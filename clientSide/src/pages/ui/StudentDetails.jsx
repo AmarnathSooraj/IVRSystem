@@ -8,6 +8,8 @@ import {
   ArrowDown,
 } from "lucide-react";
 
+const API_URL = import.meta.env.VITE_APP_API_URL || "http://localhost:5000";
+
 export default function StudentDetails() {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +24,7 @@ export default function StudentDetails() {
   const fetchStudents = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/api/students");
+      const response = await fetch(`${API_URL}/api/students`);
       if (!response.ok) throw new Error("Failed to fetch students");
       const data = await response.json();
 
