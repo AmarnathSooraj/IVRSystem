@@ -1,31 +1,63 @@
-const ivrStats = [
-  {
-    label: "Active Calls",
-    value: "0",
-    color: "text-blue-600",
-    bg: "bg-blue-50",
-  },
-  {
-    label: "Calls Today",
-    value: "0",
-    color: "text-indigo-600",
-    bg: "bg-indigo-50",
-  },
-  {
-    label: "Avg. Duration",
-    value: "0s",
-    color: "text-amber-600",
-    bg: "bg-amber-50",
-  },
-  {
-    label: "Completion Rate",
-    value: "0%",
-    color: "text-emerald-600",
-    bg: "bg-emerald-50",
-  },
-];
+import { useState, useEffect } from 'react';
 
 export default function Dashboard() {
+  const [stats, setStats] = useState({
+    activeCalls: 0,
+    callsToday: 0,
+    avgDuration: 0,
+    completionRate: 0,
+    recentLogs: []
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/twilio/stats");
+        if (response.ok) {
+          const data = await response.json();
+          setStats(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch Twilio stats:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+    // Refresh every 15 seconds
+    const interval = setInterval(fetchStats, 15000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const ivrStats = [
+    {
+      label: "Active Calls",
+      value: stats.activeCalls.toString(),
+      color: "text-blue-600",
+      bg: "bg-blue-50",
+    },
+    {
+      label: "Calls Today",
+      value: stats.callsToday.toString(),
+      color: "text-indigo-600",
+      bg: "bg-indigo-50",
+    },
+    {
+      label: "Avg. Duration",
+      value: `${stats.avgDuration}s`,
+      color: "text-amber-600",
+      bg: "bg-amber-50",
+    },
+    {
+      label: "Completion Rate",
+      value: `${stats.completionRate}%`,
+      color: "text-emerald-600",
+      bg: "bg-emerald-50",
+    },
+  ];
+
   return (
     <div className="space-y-8">
       {/* Page Header */}
@@ -87,14 +119,37 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                <tr>
-                  <td
-                    colSpan={4}
-                    className="px-5 py-12 text-center text-gray-400 italic"
-                  >
-                    No active call logs found...
-                  </td>
-                </tr>
+                {loading ? (
+                  <tr>
+                    <td colSpan={4} className="px-5 py-12 text-center text-gray-400 italic">
+                      Loading latest logs...
+                    </td>
+                  </tr>
+                ) : stats.recentLogs && stats.recentLogs.length > 0 ? (
+                  stats.recentLogs.map((log, i) => (
+                    <tr key={i} className="hover:bg-gray-50/50 transition-colors">
+                      <td className="px-5 py-3 text-gray-600">{log.time}</td>
+                      <td className="px-5 py-3 text-gray-900 font-medium">{log.callerId}</td>
+                      <td className="px-5 py-3 text-gray-600">{log.action}</td>
+                      <td className="px-5 py-3">
+                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold ${
+                          log.status === 'completed' ? 'bg-emerald-50 text-emerald-600' :
+                          log.status === 'in-progress' || log.status === 'ringing' ? 'bg-blue-50 text-blue-600' :
+                          log.status === 'failed' || log.status === 'no-answer' || log.status === 'canceled' ? 'bg-rose-50 text-rose-600' :
+                          'bg-gray-50 text-gray-600'
+                        }`}>
+                          {log.status.charAt(0).toUpperCase() + log.status.slice(1)}
+                        </span>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={4} className="px-5 py-12 text-center text-gray-400 italic">
+                      No recent call logs found.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
