@@ -14,7 +14,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const url = `http://localhost:5000/api/twilio/stats?limit=50`;
+        const url = `http://localhost:5000/api/twilio/stats?limit=100`;
         const response = await fetch(url);
         if (response.ok) {
           const data = await response.json();

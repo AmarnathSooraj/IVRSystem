@@ -36,8 +36,8 @@ export default function AuthPage() {
         
         if (res.ok) {
           setMessage({ type: 'success', text: 'Login successful. Redirecting...' });
-          // Typically we would save the token to localStorage here
-          // localStorage.setItem('adminToken', 'true');
+          // Save the user data returned from the backend login
+          localStorage.setItem('adminUser', JSON.stringify(data.user));
           setTimeout(() => navigate('/'), 1500);
         } else {
           setMessage({ type: 'error', text: data.error || 'Invalid credentials' });
@@ -75,19 +75,21 @@ export default function AuthPage() {
       
       {/* Left side: Premium Image / Branding */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-mainBlack overflow-hidden items-center justify-center">
+        <img 
+          src="/banner1.jpg" 
+          alt="College Campus" 
+          className="absolute inset-0 w-full h-full object-cover opacity-60"
+        />
         {/* Subtle decorative background patterns */}
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_left,_var(--tw-gradient-stops))] from-gray-800 via-mainBlack to-black opacity-80" />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-black/60 via-mainBlack/40 to-black/80" />
         <div className="absolute -top-[20%] -right-[10%] w-[70%] h-[70%] rounded-full bg-blue-900/30 blur-3xl mix-blend-screen" />
         <div className="absolute top-[40%] -left-[10%] w-[50%] h-[50%] rounded-full bg-indigo-900/40 blur-3xl mix-blend-screen" />
         
         <div className="z-10 text-center px-16 text-white max-w-lg">
-          <div className="inline-flex items-center justify-center p-4 bg-white/10 rounded-2xl backdrop-blur-md border border-white/10 mb-8 shadow-2xl">
-            <ShieldCheck size={48} className="text-blue-400" strokeWidth={1.5} />
-          </div>
-          <h1 className="text-4xl font-light tracking-tight mb-4">
-            College <span className="font-semibold text-blue-400">IVR Dashboard</span>
+          <h1 className="text-4xl font-tight font-medium tracking-tight mb-4">
+            College IVR Dashboard
           </h1>
-          <p className="text-gray-400 font-light leading-relaxed text-lg">
+          <p className="font-light leading-relaxed text-lg">
             A centralized hub to monitor telephonic interactions, manage realtime routing, and overview college affairs with absolute elegance.
           </p>
         </div>
@@ -99,7 +101,7 @@ export default function AuthPage() {
         <div className="w-full max-w-md space-y-10">
           
           <div className="text-center lg:text-left">
-            <h2 className="text-3xl font-semibold tracking-tight text-gray-900">
+            <h2 className="text-3xl md:text-4xl font-medium tracking-tighter text-gray-900">
               {isLogin ? 'Welcome back' : 'Request Access'}
             </h2>
             <p className="mt-3 text-sm text-gray-500 font-medium">
@@ -114,7 +116,7 @@ export default function AuthPage() {
             {!isLogin && (
               <div className="space-y-5">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-2">Full Name</label>
+                  <label className="block text-xs font-medium text-gray-600 uppercase tracking-tight mb-2">Full Name</label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                       <User size={18} className="text-gray-400" />
@@ -125,14 +127,14 @@ export default function AuthPage() {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="block w-full pl-11 pr-4 py-3 bg-gray-50 border-0 text-gray-900 rounded-xl ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-blue-600 transition-all sm:text-sm"
-                      placeholder="Jane Doe"
+                      className="block w-full pl-11 pr-4 py-3 bg-gray-50 border-0 text-gray-900 rounded-xl transition-all text-sm focus:outline-none"
+                      placeholder="full Name"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-2">Phone Number</label>
+                  <label className="block text-xs font-medium text-gray-600 uppercase tracking-tight mb-2">Phone Number</label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                       <Phone size={18} className="text-gray-400" />
@@ -143,8 +145,8 @@ export default function AuthPage() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="block w-full pl-11 pr-4 py-3 bg-gray-50 border-0 text-gray-900 rounded-xl ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-blue-600 transition-all sm:text-sm"
-                      placeholder="+1 (555) 000-0000"
+                      className="block w-full pl-11 pr-4 py-3 bg-gray-50 border-0 text-gray-900 rounded-lg transition-all text-sm focus:outline-none"
+                      placeholder="phone number"
                     />
                   </div>
                 </div>
@@ -152,7 +154,7 @@ export default function AuthPage() {
             )}
 
             <div>
-              <label className="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-2">Email Address</label>
+              <label className="block text-xs font-medium text-gray-600 uppercase tracking-tight mb-2">Email Address</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <Mail size={18} className="text-gray-400" />
@@ -163,15 +165,15 @@ export default function AuthPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="block w-full pl-11 pr-4 py-3 bg-gray-50 border-0 text-gray-900 rounded-xl ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-blue-600 transition-all sm:text-sm"
-                  placeholder="admin@college.edu"
+                  className="block w-full pl-11 pr-4 py-3 bg-gray-50 border-0 text-gray-900 rounded-sm transition-all text-sm focus:outline-none"
+                  placeholder="gmail"
                 />
               </div>
             </div>
 
             {isLogin && (
               <div>
-                <label className="block text-xs font-semibold text-gray-600 uppercase tracking-widest mb-2">Password</label>
+                <label className="block text-xs font-medium text-gray-600 uppercase tracking-tight mb-2">Password</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <Lock size={18} className="text-gray-400" />
@@ -182,7 +184,7 @@ export default function AuthPage() {
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="block w-full pl-11 pr-4 py-3 bg-gray-50 border-0 text-gray-900 rounded-xl ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-blue-600 transition-all sm:text-sm"
+                    className="block w-full pl-11 pr-4 py-3 bg-gray-50 border-0 text-gray-900 rounded-sm transition-all text-sm focus:outline-none"
                     placeholder="••••••••"
                   />
                 </div>
@@ -200,7 +202,7 @@ export default function AuthPage() {
             <button
               disabled={loading}
               type="submit"
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-mainBlack hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-mainBlack hover:bg-gray-800 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <span className="inline-block animate-pulse">Processing...</span>
@@ -220,12 +222,12 @@ export default function AuthPage() {
                 setIsLogin(!isLogin);
                 setMessage({ type: '', text: '' });
               }}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-blue-600 transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors"
             >
               {isLogin ? (
-                <>No account yet? <span className="text-blue-600">Request Access</span> <ArrowRight size={14} /></>
+                <>No account yet? <span className="text-mainBlack">Request Access</span> <ArrowRight size={14} /></>
               ) : (
-                <><ArrowLeft size={14} /> Back to <span className="text-blue-600">Sign In</span></>
+                <><ArrowLeft size={14} /> Back to <span className="text-mainBlack">Sign In</span></>
               )}
             </button>
           </div>

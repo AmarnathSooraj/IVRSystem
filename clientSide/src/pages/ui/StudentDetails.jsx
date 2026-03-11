@@ -138,7 +138,7 @@ export default function StudentDetails() {
 
       {/* Search and Sort */}
       <div className="flex items-center justify-between">
-        <div className="relative w-72">
+        <div className="relative w-full mr-2 md:mr-6">
           <Search
             size={15}
             className="absolute left-3 top-1/2 -translate-y-1/2 text-mainBlack/40"
@@ -148,13 +148,13 @@ export default function StudentDetails() {
             placeholder="Search name, admission no, course..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-sm border border-mainBlack/20 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-mainBlack focus:border-mainBlack transition-all"
+            className="max-w-full w-full pl-9 pr-4 py-2 text-sm border border-mainBlack/20 rounded-lg bg-white focus:outline-none transition-all"
           />
         </div>
 
         <button
           onClick={toggleSort}
-          className="flex items-center gap-2 px-4 py-2 bg-white border border-mainBlack/10 rounded-lg text-sm font-medium text-mainBlack hover:bg-mainBlack/5 transition-colors"
+          className="flex items-center gap-2 px-2 md:px-4 py-2 bg-white border border-mainBlack/10 rounded-lg text-xs md:text-sm font-medium text-mainBlack hover:bg-mainBlack/5 transition-colors"
         >
           {sortOrder === "asc" ? (
             <ArrowUp size={16} />
