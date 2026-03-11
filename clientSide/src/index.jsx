@@ -7,10 +7,16 @@ import StaffDetails from "./pages/ui/StaffDetails";
 import WebCaller from "./components/WebCaller";
 import AuthPage from "./pages/ui/AuthPage";
 
+import ProtectedRoute from "./components/ProtectedRoute";
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
       { index: true, element: <Dashboard /> },
       { path: "fees", element: <FeeDetails /> },

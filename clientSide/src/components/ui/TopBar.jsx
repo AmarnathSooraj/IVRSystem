@@ -60,13 +60,14 @@ export default function TopBar() {
           </div>
         </div>
 
-        {/* Logout button - Visible only on mobile */}
+        {/* Logout button - Visible on all devices */}
         <button
           onClick={handleLogout}
-          className="lg:hidden p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
+          className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors flex items-center gap-2"
           title="Logout"
         >
           <LogOut size={20} />
+          <span className="hidden md:inline text-sm font-medium">Logout</span>
         </button>
       </div>
     </header>
