@@ -14,6 +14,7 @@ const WebCaller = () => {
   const [status, setStatus] = useState("idle"); // idle | connecting | connected | disconnected
   const [dtmfInput, setDtmfInput] = useState("");
   const [error, setError] = useState(null);
+  const [currentSpeech, setCurrentSpeech] = useState("");
 
   useEffect(() => {
     async function setupDevice() {
@@ -28,6 +29,22 @@ const WebCaller = () => {
       }
     }
     setupDevice();
+
+    const eventSource = new EventSource("http://localhost:5000/api/stream-logs");
+    eventSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.text) {
+          setCurrentSpeech(data.text);
+        }
+      } catch (e) {
+        console.error("Error parsing SSE data", e);
+      }
+    };
+
+    return () => {
+      eventSource.close();
+    };
   }, []);
 
   const makeCall = async () => {
@@ -35,6 +52,7 @@ const WebCaller = () => {
     setError(null);
     setStatus("connecting");
     setDtmfInput("");
+    setCurrentSpeech("");
     try {
       const newCall = await device.connect({ params: { To: "+18302228555" } });
       newCall.on("accept", () => setStatus("connected"));
@@ -42,6 +60,7 @@ const WebCaller = () => {
         setStatus("idle");
         setCall(null);
         setDtmfInput("");
+        setCurrentSpeech("");
       });
       newCall.on("error", (err) => {
         setError(err.message);
@@ -57,6 +76,7 @@ const WebCaller = () => {
 
   const hangUp = () => {
     if (call) call.disconnect();
+    setCurrentSpeech("");
   };
 
   const sendDtmf = (digit) => {
@@ -94,6 +114,19 @@ const WebCaller = () => {
           <p className="text-xs text-mainBlack text-center bg-mainBlack/5 border border-mainBlack/10 rounded-lg px-3 py-2 w-full">
             {error}
           </p>
+        )}
+
+        {/* IVR Speech Display */}
+        {isConnected && currentSpeech && (
+          <div className="w-full bg-blue-50/50 border border-blue-100/50 rounded-xl px-4 py-3 shadow-sm flex flex-col items-center animate-in fade-in duration-300">
+            <span className="text-[10px] uppercase font-bold text-blue-400 tracking-wider mb-1 flex items-center gap-1">
+              <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse"></span>
+              IVR is Speaking
+            </span>
+            <p className="text-sm text-blue-900 text-center font-medium leading-relaxed italic">
+              "{currentSpeech}"
+            </p>
+          </div>
         )}
 
         {/* DTMF display */}

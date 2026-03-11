@@ -1,0 +1,8 @@
+
+    <Response>
+      <Gather input="speech dtmf" timeout="5" language="en-US" enhanced="true" action="/api/menu" numDigits="1">
+        <Say voice="Google.en-US-Neural2-F">Welcome to College of Engineering vadakara. You can speak your request or use the keypad. Say marks or press 1 for marks. Say fees or press 2 for fees.</Say>
+      </Gather>
+      <Say voice="Google.en-US-Neural2-F">We didn't receive any input. Goodbye.</Say>
+    </Response>
+  
