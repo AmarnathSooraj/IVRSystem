@@ -1,6 +1,6 @@
 require("dotenv").config();
 const db = require("../config/firebase");
-const courses = require("../course.json");
+const courses = require("./course.json");
 
 async function uploadCourses() {
   try {

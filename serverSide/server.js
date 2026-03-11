@@ -7,6 +7,7 @@ const path = require("path");
 dotenv.config();
 
 const studentRoutes = require("./routes/studentRoutes");
+const courseRoutes = require("./routes/courseRoutes");
 const db = require("./config/firebase");
 const {
   jwt: { AccessToken },
@@ -18,6 +19,10 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Routes
+app.use("/api/students", studentRoutes);
+app.use("/api/courses", courseRoutes);
 
 // Root route
 app.get("/api/token", (req, res) => {
