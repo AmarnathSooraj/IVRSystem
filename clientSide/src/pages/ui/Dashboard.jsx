@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 
+const API_URL = import.meta.env.VITE_APP_API_URL || "http://localhost:5000";
+
 export default function Dashboard() {
   const [stats, setStats] = useState({
     activeCalls: 0,
@@ -14,7 +16,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const url = `http://localhost:5000/api/twilio/stats?limit=100`;
+        const url = `${API_URL}/api/twilio/stats?limit=100`;
         const response = await fetch(url);
         if (response.ok) {
           const data = await response.json();

@@ -8,6 +8,8 @@ const DTMF_KEYS = [
   ["*", "0", "#"],
 ];
 
+const API_URL = import.meta.env.VITE_APP_API_URL || "http://localhost:5000";
+
 const WebCaller = () => {
   const [device, setDevice] = useState(null);
   const [call, setCall] = useState(null);
@@ -19,7 +21,7 @@ const WebCaller = () => {
   useEffect(() => {
     async function setupDevice() {
       try {
-        const response = await fetch("http://localhost:5000/api/token");
+        const response = await fetch(`${API_URL}/api/token`);
         const data = await response.json();
         const newDevice = new Device(data.token);
         newDevice.on("error", (err) => setError(err.message));
@@ -30,7 +32,7 @@ const WebCaller = () => {
     }
     setupDevice();
 
-    const eventSource = new EventSource("http://localhost:5000/api/stream-logs");
+    const eventSource = new EventSource(`${API_URL}/api/stream-logs`);
     eventSource.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
