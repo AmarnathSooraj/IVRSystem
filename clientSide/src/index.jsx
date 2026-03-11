@@ -1,9 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import Dashboard from "./pages/ui/Dashboard";
+import FeeDetails from "./pages/ui/FeeDetails";
 import StudentDetails from "./pages/ui/StudentDetails";
 import StaffDetails from "./pages/ui/StaffDetails";
 import WebCaller from "./components/WebCaller";
+import AuthPage from "./pages/ui/AuthPage";
 
 const router = createBrowserRouter([
   {
@@ -11,6 +13,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <Dashboard /> },
+      { path: "fees", element: <FeeDetails /> },
       { path: "students", element: <StudentDetails /> },
       { path: "staff", element: <StaffDetails /> },
     ],
@@ -18,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "/make-call",
     element: <WebCaller />,
+  },
+  {
+    path: "/login",
+    element: <AuthPage />,
   },
 ]);
 
