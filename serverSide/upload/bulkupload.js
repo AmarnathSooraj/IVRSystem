@@ -1,5 +1,5 @@
-const db = require("./config/firebase");
-const students = require("./students.json");
+const db = require("../config/firebase");
+const students = require("../students.json");
 
 async function uploadStudents() {
   try {
