@@ -80,7 +80,7 @@ const WebCaller = () => {
         <span
           className={`text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full border ${
             isConnected
-              ? "bg-green-100 text-green-700 border-green-200"
+              ? "bg-green-200 text-green-700 border-green-200"
               : isConnecting
                 ? "bg-yellow-100 text-yellow-700 border-yellow-200"
                 : "bg-gray-100 text-gray-500 border-gray-200"
