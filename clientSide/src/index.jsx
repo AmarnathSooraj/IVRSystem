@@ -4,6 +4,7 @@ import Dashboard from "./pages/ui/Dashboard";
 import StudentDetails from "./pages/ui/StudentDetails";
 import StaffDetails from "./pages/ui/StaffDetails";
 import WebCaller from "./components/WebCaller";
+import AuthPage from "./pages/ui/AuthPage";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,14 @@ const router = createBrowserRouter([
     path: "/make-call",
     element: <WebCaller />,
   },
+  {
+    path: "/login",
+    element: <AuthPage />,
+  },
+  {
+    path: "/auth",
+    element: <AuthPage />,
+  }
 ]);
 
 export default router;
