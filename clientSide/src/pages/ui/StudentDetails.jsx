@@ -22,7 +22,7 @@ export default function StudentDetails() {
   const fetchStudents = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/students");
+      const response = await fetch("http://localhost:5000/api/students");
       if (!response.ok) throw new Error("Failed to fetch students");
       const data = await response.json();
 

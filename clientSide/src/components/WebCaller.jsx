@@ -18,7 +18,7 @@ const WebCaller = () => {
   useEffect(() => {
     async function setupDevice() {
       try {
-        const response = await fetch("/token");
+        const response = await fetch("http://localhost:5000/api/token");
         const data = await response.json();
         const newDevice = new Device(data.token);
         newDevice.on("error", (err) => setError(err.message));
